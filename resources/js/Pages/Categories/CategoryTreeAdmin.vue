@@ -34,7 +34,10 @@
 
   <DeleteModal
     v-model="showDeleteModal"
-    @confirm="$emit('delete', categoryId)"
+    @confirm="
+      $emit('delete', categoryId);
+      showDeleteModal = false;
+    "
     @cancel="showDeleteModal = false"
   ></DeleteModal>
 </template>
@@ -50,6 +53,7 @@
   });
 
   const emit = defineEmits(['edit', 'delete']);
+
   const showDeleteModal = ref(false);
   const categoryId = ref(null);
 
