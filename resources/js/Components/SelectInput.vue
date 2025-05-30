@@ -1,30 +1,30 @@
 <script setup>
-import { onMounted, ref } from 'vue';
+  import { onMounted, ref } from 'vue';
 
-const props = defineProps({
-  modelValue: {
-    type: [String, Number],
-    required: true
-  },
-  options: {
-    type: Array,
-    required: true
-  }
-})
+  const props = defineProps({
+    modelValue: {
+      type: [String, Number, null],
+      required: true,
+    },
+    options: {
+      type: Array,
+      required: true,
+    },
+  });
 
-const emit = defineEmits(['update:modelValue'])
+  const emit = defineEmits(['update:modelValue']);
 
-const input = ref(null)
+  const input = ref(null);
 
-onMounted(() => {
-  if (input.value?.hasAttribute('autofocus')) {
-    input.value.focus()
-  }
-})
+  onMounted(() => {
+    if (input.value?.hasAttribute('autofocus')) {
+      input.value.focus();
+    }
+  });
 
-defineExpose({
-  focus: () => input.value?.focus()
-})
+  defineExpose({
+    focus: () => input.value?.focus(),
+  });
 </script>
 
 <template>
@@ -36,10 +36,10 @@ defineExpose({
   >
     <option
       v-for="option in options"
-      :key="option.value"
-      :value="option.value"
+      :key="option.value || option.id || ''"
+      :value="option.value || option.id || ''"
     >
-      {{ option.title }}
+      {{ option.title || option.name }}
     </option>
   </select>
 </template>

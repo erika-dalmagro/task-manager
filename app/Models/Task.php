@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
 class Task extends Model
 {
@@ -25,6 +26,13 @@ class Task extends Model
     {
         return $priority ? $query->where('priority', $priority) : $query;
     }
-    
+
+    /**
+     * Many-to-many: Task ↔ Categories
+    */
+    public function categories(): BelongsToMany
+    {
+        return $this->belongsToMany(Category::class)->withTimestamps();
+    }
 }
 

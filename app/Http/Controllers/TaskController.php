@@ -4,12 +4,14 @@ namespace App\Http\Controllers;
 
 use App\Models\Task;
 use Inertia\Inertia;
+use App\Http\Resources\TaskResource;
 
 class TaskController extends Controller
 {
        public function index()
     {
         return Inertia::render('Tasks/Index');
+        
     }
 
     public function create()
@@ -19,8 +21,10 @@ class TaskController extends Controller
 
     public function edit(Task $task)
     {
+        $task->load('categories');
+
         return Inertia::render('Tasks/Form', [
-            'task' => $task
+            'task' => new TaskResource($task),
         ]);
     }
 }

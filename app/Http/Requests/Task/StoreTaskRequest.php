@@ -5,11 +5,6 @@ use Illuminate\Foundation\Http\FormRequest;
 
 class StoreTaskRequest extends FormRequest
 {
-    public function authorize(): bool
-    {
-        return true; // Adjust if you add auth logic
-    }
-
     public function rules(): array
     {
         return [
@@ -17,6 +12,8 @@ class StoreTaskRequest extends FormRequest
             'description' => 'nullable|string',
             'status' => 'required|in:pending,in_progress,completed',
             'priority' => 'required|in:low,medium,high',
+            'category_ids' => ['nullable', 'array'],
+            'category_ids.*' => ['exists:categories,id'],
         ];
     }
 }

@@ -1,63 +1,54 @@
 <template>
-    <Head :title="isEdit ? 'Update Task' : 'Create Task'" />
+  <Head :title="isEdit ? 'Update Task' : 'Create Task'" />
 
-    <Layout>
-        <template #header>
-          <div class="flex justify-between px-6">
-            <h2 class="font-semibold text-xl text-gray-800 leading-tight">{{ isEdit ? 'Update' : 'Create' }} Task</h2>
-            
-            <NavLink :href="route('tasks.index')">
-                List
-            </NavLink>
-          </div>
-        </template>
-<div class="py-10">
-            <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
-                <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
-                  <div class="p-6">
-                    <form @submit.prevent="submitForm" class="space-y-4">
+  <Layout>
+    <template #middle>
+      <h2 class="font-semibold text-xl text-gray-800 leading-tight">{{ actionLabel }} Task</h2>
+    </template>
+    <div class="py-10">
+      <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
+        <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
+          <div class="p-6">
+            <form @submit.prevent="submitForm" class="space-y-4">
               <div>
                 <InputLabel for="title" value="Title" />
 
                 <TextInput
-                    id="title"
-                    type="text"
-                    class="mt-1 block w-full"
-                    v-model="form.title"
-                    required
-                    autofocus
-                    autocomplete="title"
+                  id="title"
+                  type="text"
+                  class="mt-1 block w-full"
+                  v-model="form.title"
+                  required
+                  autofocus
+                  autocomplete="title"
                 />
 
                 <InputError class="mt-2" :message="form.errors.title" />
-
               </div>
 
-              <div>                
+              <div>
                 <InputLabel for="description" value="Description" />
-                
+
                 <TextAreaInput
-                    id="description"
-                    type="text"
-                    class="mt-1 block w-full"
-                    v-model="form.description"
-                    autofocus
-                    autocomplete="description"
+                  id="description"
+                  type="text"
+                  class="mt-1 block w-full"
+                  v-model="form.description"
+                  autocomplete="description"
                 />
 
                 <InputError class="mt-2" :message="form.errors.description" />
               </div>
 
               <div>
-                <InputLabel for="status" value="Status"/>
+                <InputLabel for="status" value="Status" />
                 <SelectInput
-                    id="status"
-                    class="mt-1 block w-full"
-                    v-model="form.status"
-                    required
-                    autofocus
-                    :options="statusOptions"
-                  />
+                  id="status"
+                  class="mt-1 block w-full"
+                  v-model="form.status"
+                  required
+                  :options="statusOptions"
+                />
 
                 <InputError class="mt-2" :message="form.errors.status" />
               </div>
@@ -65,89 +56,114 @@
               <div>
                 <InputLabel for="priority" value="Priority" />
                 <SelectInput
-                    id="priority"
-                    class="mt-1 block w-full"
-                    v-model="form.priority"
-                    required
-                    autofocus
-                    :options="priorityOptions"
-                  />
+                  id="priority"
+                  class="mt-1 block w-full"
+                  v-model="form.priority"
+                  required
+                  :options="priorityOptions"
+                />
 
                 <InputError class="mt-2" :message="form.errors.priority" />
               </div>
-              
-              <PrimaryButton :disabled="form.processing">{{ isEdit ? 'Update' : 'Create' }} Task</PrimaryButton>
+
+              <div>
+                <InputLabel for="categories" value="Categories" class="mb-2" />
+
+                <label v-for="cat in categoryStore.categories" :key="cat.id">
+                  <input
+                    type="checkbox"
+                    :value="cat.id"
+                    v-model="form.category_ids"
+                    class="ml-4 rounded border-gray-300 text-indigo-600 shadow-sm focus:ring-indigo-500"
+                  />
+                  {{ cat.name }}
+                </label>
+              </div>
+              <div class="justify-between flex mx-2">
+                <PrimaryButton :disabled="form.processing"> {{ actionLabel }} Task </PrimaryButton>
+                <SecondaryButton class="justify-end flex" @click="showModal = true"
+                  >+ Add Category</SecondaryButton
+                >
+              </div>
+              <div v-if="showModal" class="modal">
+                <Modal :show="showModal">
+                  <CategoryForm @closeModal="showModal = false" is-modal></CategoryForm>
+                </Modal>
+              </div>
             </form>
-                  </div>
-                  </div></div>
-                  </div>
-          
-    </Layout>
+          </div>
+        </div>
+      </div>
+    </div>
+  </Layout>
 </template>
 
 <script setup>
-import NavLink from '@/Components/NavLink.vue';
-import { reactive, computed } from 'vue'
-import { useTaskStore } from '@/stores/taskStore'
-import Layout from '@/Layouts/Layout.vue';
-import { Head, router } from '@inertiajs/vue3'
-import PrimaryButton from '@/Components/PrimaryButton.vue';
-import { priorityOptions, statusOptions } from './taskHelper';
-import InputError from '@/Components/InputError.vue';
-import InputLabel from '@/Components/InputLabel.vue';
-import TextInput from '@/Components/TextInput.vue';
-import TextAreaInput from '@/Components/TextAreaInput.vue';
-import SelectInput from '@/Components/SelectInput.vue';
+  import Layout from '@/Layouts/Layout.vue';
+  import { onMounted, ref, computed } from 'vue';
+  import { useForm, usePage, Link, Head, router } from '@inertiajs/vue3';
+  import { useTaskStore } from '@/stores/taskStore';
+  import { useCategoryStore } from '@/stores/categoryStore';
+  import CategoryForm from '../Categories/CategoryForm.vue';
+  import { priorityOptions, statusOptions } from './taskHelper';
 
-import { Link, useForm, usePage } from '@inertiajs/vue3';
+  // Components
+  import PrimaryButton from '@/Components/PrimaryButton.vue';
+  import SecondaryButton from '@/Components/SecondaryButton.vue';
+  import InputError from '@/Components/InputError.vue';
+  import InputLabel from '@/Components/InputLabel.vue';
+  import Modal from '@/Components/Modal.vue';
+  import TextInput from '@/Components/TextInput.vue';
+  import TextAreaInput from '@/Components/TextAreaInput.vue';
+  import SelectInput from '@/Components/SelectInput.vue';
 
-const props = defineProps({
-  task: {
-    type: Object,
-    default: () => ({
-      title: '',
-      description: '',
-      status: 'pending',
-      priority: 'medium',
-    }),
-  },
-})
+  const props = defineProps({
+    task: {
+      type: Object,
+      default: () => ({
+        title: '',
+        description: '',
+        status: 'pending',
+        priority: 'medium',
+        category_ids: [],
+      }),
+    },
+  });
 
+  const showModal = ref(false);
+  const task = usePage().props.task?.data;
+  const actionLabel = computed(() => (isEdit.value ? 'Update' : 'Create'));
+  const store = useTaskStore();
+  const categoryStore = useCategoryStore();
+  const isEdit = computed(() => !!task);
 
-const task = usePage().props.task;
+  const form = useForm({
+    title: task?.title || '',
+    description: task?.description || '',
+    status: task?.status || 'pending',
+    priority: task?.priority || 'medium',
+    category_ids: Array.isArray(task?.category_ids) ? task.category_ids : [],
+  });
 
-const form = useForm({
-    title: task ? task.title : '',
-    description: task ? task.description : '',
-    status: task ? task.status : '',
-    priority: task ? task.priority : '',
-});
+  onMounted(() => {
+    categoryStore.fetchCategories();
+  });
 
-const errors = reactive({})
-const store = useTaskStore()
-const isEdit = computed(() => !!task)
+  const submitForm = async () => {
+    try {
+      if (isEdit.value) {
+        await store.updateTask(task.id, { ...form });
+      } else {
+        await store.createTask({ ...form });
+      }
 
-const submitForm = async () => {
-  try {
-    if (isEdit.value) {
-      await store.updateTask(task.id, { ...form })
-    } else {
-      await store.createTask({ ...form })
+      onSuccess();
+    } catch (error) {
+      throw error;
     }
+  };
 
-    onSuccess()
-  } catch (error) {
-    console.log(error)
-    if (error.response?.status === 422) {
-      const serverErrors = error.response.data.errors
-      Object.assign(errors, serverErrors)
-    } else {
-      alert('Something went wrong. Please try again.')
-    }
+  function onSuccess() {
+    router.visit('/tasks');
   }
-  
-}
-function onSuccess() {
-  router.visit('/tasks')
-}
 </script>
