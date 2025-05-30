@@ -32,7 +32,7 @@ class TaskRepository
         $sortBy = $filters['sort_by'] ?? 'created_at';
         $sortDir = strtolower($filters['sort_dir'] ?? 'desc');
 
-        if (!in_array($sortBy, ['title', 'priority', 'status', 'due_date', 'created_at'])) {
+        if (!in_array($sortBy, ['title', 'priority', 'status',  'created_at'])) {
             $sortBy = 'created_at';
         }
 

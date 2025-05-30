@@ -6,7 +6,7 @@
     </template>
 
     <div class="py-10">
-      <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
+      <div class="max-w-6xl mx-auto sm:px-6 lg:px-8">
         <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
           <div class="p-6">
             <div class="flex items-center justify-end gap-4 mb-4">
@@ -26,6 +26,24 @@
                 required
                 autofocus
                 :options="[{ value: '', title: 'All Priorities' }, ...priorityOptions]"
+              />
+
+              <SelectInput
+                id="sort_by"
+                class="mt-1 block"
+                v-model="filters.sort_by"
+                required
+                autofocus
+                :options="sortByOptions"
+              />
+
+              <SelectInput
+                id="sort_dir"
+                class="mt-1 block"
+                v-model="filters.sort_dir"
+                required
+                autofocus
+                :options="sortDirections"
               />
 
               <PrimaryButton class="bg-gray-800 text-white" @click="applyFilters">
@@ -97,8 +115,14 @@
   import Layout from '@/Layouts/Layout.vue';
   import { toRefs, ref, onMounted, reactive } from 'vue';
   import { useTaskStore } from '@/stores/taskStore';
-  import { Link, Head, router } from '@inertiajs/vue3';
-  import { priorityOptions, statusOptions, perPageOptions } from './taskHelper';
+  import { Head, router } from '@inertiajs/vue3';
+  import {
+    priorityOptions,
+    statusOptions,
+    perPageOptions,
+    sortByOptions,
+    sortDirections,
+  } from './taskHelper';
 
   // Components
   import SecondaryButton from '@/Components/SecondaryButton.vue';
@@ -118,6 +142,8 @@
     status: '',
     priority: '',
     per_page: 5,
+    sort_by: 'created_at',
+    sort_dir: 'desc',
   });
 
   onMounted(() => {

@@ -7,17 +7,27 @@
     </template>
 
     <div class="py-10">
-      <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
+      <div class="max-w-5xl mx-auto sm:px-6 lg:px-8">
         <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
           <div class="p-6">
             <div v-if="loading" class="mb-4">Loading categories...</div>
 
-            <CategoryTreeAdmin
-              v-else
-              :categories="categories"
-              @edit="handleEdit"
-              @delete="handleDelete"
-            />
+            <div v-else-if="categories.length <= 0" class="text-center py-6 text-gray-500">
+              No categories found.
+            </div>
+
+            <div v-else>
+              <table class="w-full border">
+                <thead>
+                  <tr>
+                    <th class="border px-4 py-2">Name</th>
+                    <th class="border px-4 py-2">Actions</th>
+                  </tr>
+                </thead>
+              </table>
+            </div>
+
+            <CategoryTreeAdmin :categories="categories" @edit="handleEdit" @delete="handleDelete" />
           </div>
         </div>
       </div>

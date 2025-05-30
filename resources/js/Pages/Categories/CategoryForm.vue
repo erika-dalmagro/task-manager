@@ -4,7 +4,6 @@
     <form @submit.prevent="submitForm" class="flex flex-col">
       <div>
         <InputLabel for="name" value="Category Name" />
-        {{ form }}
         <TextInput
           id="name"
           type="text"
@@ -30,9 +29,7 @@
         <InputError class="mt-2" :message="form.errors.parent_id" />
       </div>
       <div class="flex justify-end mt-6 gap-2">
-        <SecondaryButton class="justify-end flex" @click="emit('closeModal')"
-          >Cancel</SecondaryButton
-        >
+        <SecondaryButton class="justify-end flex" @click="onSuccess()">Cancel</SecondaryButton>
         <PrimaryButton :disabled="form.processing"> Save </PrimaryButton>
       </div>
     </form>
@@ -74,7 +71,6 @@
   const submitForm = async () => {
     try {
       if (isEdit.value) {
-        console.log(isEdit.value, category.id, form);
         await categoryStore.updateCategory(category.id, { ...form });
       } else {
         await categoryStore.createCategory({ ...form });
