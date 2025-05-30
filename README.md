@@ -37,10 +37,7 @@ Hey! Welcome to my **Task Manager**! It's built with a Laravel backend and a Vue
         ```bash
         composer install
         ```
-    * Create your environment file:
-        ```bash
-        cp .env.example .env
-        ```
+    * Create your environment file (.env)
     * Generate your application key:
         ```bash
         php artisan key:generate
