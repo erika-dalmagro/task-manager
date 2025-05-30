@@ -1,5 +1,11 @@
 <script setup>
-  import { Link } from '@inertiajs/vue3';
+  import { Link, usePage } from '@inertiajs/vue3';
+  import { computed } from 'vue';
+
+  const page = usePage();
+
+  const isTasksUrlActive = computed(() => page.url.startsWith('/tasks'));
+  const isCategoriesUrlActive = computed(() => page.url.startsWith('/categories'));
 </script>
 
 <template>
@@ -13,12 +19,14 @@
               <Link
                 :href="route('tasks.index')"
                 class="font-semibold text-xl text-gray-800 leading-tight"
+                :class="{ 'underline underline-offset-4': isTasksUrlActive }"
               >
                 Tasks
               </Link>
               <Link
                 :href="route('categories.index')"
                 class="font-semibold text-xl text-gray-800 leading-tight"
+                :class="{ 'underline underline-offset-4': isCategoriesUrlActive }"
                 >Categories</Link
               >
             </div>

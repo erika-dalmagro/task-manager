@@ -6,6 +6,7 @@ import { useToast } from 'vue-toastification';
 export const useCategoryStore = defineStore('categoryStore', () => {
   const toast = useToast();
   const categories = ref([]);
+  const categoriesForSelect = ref([]);
   const loading = ref(false);
   const errors = ref({});
 
@@ -21,6 +22,18 @@ export const useCategoryStore = defineStore('categoryStore', () => {
       categories.value = res.data.data;
     } catch (e) {
       toast.error('Failed to load categories');
+    } finally {
+      loading.value = false;
+    }
+  }
+
+  async function fetchCategoriesForSelect() {
+    loading.value = true;
+    try {
+      const res = await axios.get('/api/all-categories');
+      categoriesForSelect.value = res.data;
+    } catch (e) {
+      toast.error('Failed to load category list');
     } finally {
       loading.value = false;
     }
@@ -64,11 +77,13 @@ export const useCategoryStore = defineStore('categoryStore', () => {
 
   return {
     categories,
+    categoriesForSelect,
     loading,
     categoryForm,
     errors,
     deleteCategory,
     fetchCategories,
+    fetchCategoriesForSelect,
     createCategory,
     updateCategory,
   };

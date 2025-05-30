@@ -18,3 +18,5 @@ use App\Http\Controllers\Api\CategoryController;
 
 Route::apiResource('tasks', TaskController::class);
 Route::apiResource('categories', CategoryController::class);
+
+Route::get('all-categories', [CategoryController::class, 'allCategories'])->name('api.categories.allCategories');

@@ -69,7 +69,7 @@
               <div>
                 <InputLabel for="categories" value="Categories" class="mb-2" />
 
-                <label v-for="cat in categoryStore.categories" :key="cat.id">
+                <label v-for="cat in categoryStore.categoriesForSelect" :key="cat.id">
                   <input
                     type="checkbox"
                     :value="cat.id"
@@ -146,7 +146,7 @@
   });
 
   onMounted(() => {
-    categoryStore.fetchCategories();
+    categoryStore.fetchCategoriesForSelect();
   });
 
   const submitForm = async () => {

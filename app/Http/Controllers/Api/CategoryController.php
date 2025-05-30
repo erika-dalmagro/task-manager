@@ -21,6 +21,21 @@ class CategoryController extends Controller
 
         return CategoryResource::collection($categories);
     }
+
+    public function allCategories()
+    {
+        // Fetch all categories
+        $categories = Category::with('parent')->orderBy('name')->get();
+
+        return response()->json($categories->map(function (Category $category) {
+            return [
+                'id' => $category->id,
+                'name' => $category->name,
+                'parent_id' => $category->parent_id
+            ];
+        }));
+    }
+    
     public function store(StoreCategoryRequest $request)
     {
         $category = $this->service->store($request->validated());
