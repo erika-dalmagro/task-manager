@@ -1,19 +1,16 @@
-# Task Manager 📝
+# Task Manager
 
-Hey! Welcome to my **Task Manager**! It's built with a Laravel backend and a Vue.js frontend using Inertia.js. Hope you like it!
+A web application for managing task, built with Laravel and Vue.js (Inertia.js).
 
-## ✨ What It Can Do
+## Features
 
-*  **Task Management**: Tasks CRUD.
-*  **Category Management**: Categories CRUD.
-*  **Nested Categories**: Organize categories into parent-child hierarchies
-*  **Filtering and Sorting**
-*  **Pagination**
-*  **Task-Category Linking**
-*  **Toast Notifications**
-*  **RESTful API**
+*  Task Management (CRUD)
+*  Category Management (CRUD)
+*  Nested Categories: Organize categories into parent-child hierarchies
+*  Filtering, Sorting and Pagination
+*  Task-Category Linking
 
-## 🛠️ Tech I Used
+## Stack
 
 * PHP 8.1+
 * Laravel 10
@@ -24,7 +21,7 @@ Hey! Welcome to my **Task Manager**! It's built with a Laravel backend and a Vue
 * Tailwind CSS
 * Pest 2
 
-## 🚀 Setup
+## Setup
 
 1.  **Clone the Project:**
     ```bash
@@ -46,8 +43,8 @@ Hey! Welcome to my **Task Manager**! It's built with a Laravel backend and a Vue
         Open the `.env` file and set your database details.
         ```env
         DB_CONNECTION=pgsql
-        DB_HOST=127.0.0.1   # Or your pgsql host
-        DB_PORT=5432        # Or your pgsql port
+        DB_HOST=127.0.0.1
+        DB_PORT=5432
         DB_DATABASE=your_database
         DB_USERNAME=your_user
         DB_PASSWORD=your_password
