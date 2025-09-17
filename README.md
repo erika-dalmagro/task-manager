@@ -1,6 +1,6 @@
 # Task Manager
 
-A web application for managing task, built with Laravel and Vue.js (Inertia.js).
+A web application for managing tasks, built with Laravel and Vue.js
 
 ## Features
 
@@ -40,7 +40,7 @@ A web application for managing task, built with Laravel and Vue.js (Inertia.js).
         php artisan key:generate
         ```
     * **Configure your Database in `.env`:**
-        Open the `.env` file and set your database details.
+        Open the `.env` file and set your database details
         ```env
         DB_CONNECTION=pgsql
         DB_HOST=127.0.0.1
@@ -70,17 +70,17 @@ A web application for managing task, built with Laravel and Vue.js (Inertia.js).
 I tried to keep the code organized:
 
 * **Backend:**
-    * **Repositories**: I used a Repository Pattern (`TaskRepository`, `CategoryRepository`). Controllers talk to Services, and Services talk to these Repositories.
-    * **Services**: The main "thinking"for tasks and categories is in Service classes (`TaskService`, `CategoryService`).
-    * **API Resources**: I'm using Laravel's API Resources (`TaskResource`, `CategoryResource`).
-    * **Form Requests**: Check if the data is valid before the controller (e.g., `StoreTaskRequest`).
-    * **Soft Deletes**: If you delete a task or category, it's not gone forever right away.
-    * **API Routes**: The API routes use `apiResource` for easy setup of CRUD endpoints.
+    * **Repositories**: I used a Repository Pattern (`TaskRepository`, `CategoryRepository`). Controllers talk to Services, and Services talk to these Repositories
+    * **Services**: The main "thinking"for tasks and categories is in Service classes (`TaskService`, `CategoryService`)
+    * **API Resources**: I'm using Laravel's API Resources (`TaskResource`, `CategoryResource`)
+    * **Form Requests**: Check if the data is valid before the controller (e.g., `StoreTaskRequest`)
+    * **Soft Deletes**: If you delete a task or category, it's not gone forever right away
+    * **API Routes**: The API routes use `apiResource` for easy setup of CRUD endpoints
 
 * **Frontend:**
-    * **Inertia.js**: Connects Laravel (backend) and Vue (frontend).
-    * **Pinia**: Manages shared data (state) in the Vue app. The Pinia stores (`taskStore.ts`, `categoryStore.ts`) also make the calls to the backend API using Axios.
-    * **JS Helpers**: Files like `resources/js/Pages/Tasks/taskHelper.js` store things like options for dropdown menus (status, priority, etc.) to keep them organized.
+    * **Inertia.js**: Connects Laravel (backend) and Vue (frontend)
+    * **Pinia**: Manages shared data (state) in the Vue app. The Pinia stores (`taskStore.ts`, `categoryStore.ts`) also make the calls to the backend API using Axios
+    * **JS Helpers**: Files like `resources/js/Pages/Tasks/taskHelper.js` store things like options for dropdown menus (status, priority, etc.) to keep them organized
 
 ---
 
